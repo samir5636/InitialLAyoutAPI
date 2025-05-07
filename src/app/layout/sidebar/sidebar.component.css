@@ -1,0 +1,57 @@
+mat-drawer-container {
+  height: 80vh;
+}
+
+mat-drawer {
+  width: 80px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: 10px;
+}
+
+mat-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  margin: 20;
+}
+
+mat-list-item {
+  width: 100%;
+  justify-content: center;
+  padding: 0;
+}
+
+.nav-item {
+  width: 100%;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--sidebar-text);
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-item mat-icon {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.nav-item span {
+  font-size: 10px;
+}
+
+.nav-item:hover {
+  background-color: var(--sidebar-hover);
+  color: white;
+}
+
+.nav-item.active {
+  background-color: var(--sidebar-active);
+  color: white;
+}

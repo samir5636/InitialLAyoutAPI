@@ -1,0 +1,34 @@
+<mat-drawer-container>
+  <mat-drawer #myDrawer [opened]="true" mode="side" position="start">
+    <mat-list>
+      <mat-list-item>
+        <button mat-icon-button class="nav-item active">
+          <mat-icon>folder</mat-icon>
+          <span>Collections</span>
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-icon-button class="nav-item">
+          <mat-icon>layers</mat-icon>
+          <span>Environments</span>
+        </button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-icon-button class="nav-item">
+          <mat-icon>history</mat-icon>
+          <span>History</span>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div>
+      <router-outlet>
+
+      </router-outlet>
+
+    </div>
+  </mat-drawer-content>
+
+</mat-drawer-container>
+

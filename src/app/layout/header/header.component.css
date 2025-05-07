@@ -1,0 +1,66 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 12px;
+  height: 64px;
+  background-color: var(--header-bg);
+  color: var(--header-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.left-section, .center-section, .right-section {
+  display: flex;
+  align-items: center;
+}
+
+.left-section {
+  gap: 12px;
+}
+
+.nav-toggle button {
+  font-size: 0.875rem;
+  color: var(--header-color);
+  text-transform: none;
+}
+
+.brand {
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-left: 8px;
+}
+
+.center-section {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 24px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+  margin-right: 8px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  color: var(--header-color);
+  font-size: 0.95rem;
+}
+
+.invite-button {
+  height: 36px;
+  border-radius: 18px;
+  text-transform: none;
+  margin: 0 8px;
+  font-weight: 500;
+  gap: 6px;
+}
+
+.mat-icon-button {
+  margin: 0 4px;
+}
+
