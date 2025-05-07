@@ -1,3 +1,4 @@
+// src/app/layout/sidebar/sidebar.component.ts
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
+  activeNavItem: string = 'collections';
 
+  setActiveNavItem(item: string) {
+    this.activeNavItem = item;
+  }
 }
