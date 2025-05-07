@@ -1,0 +1,52 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.tools-panel {
+  width: 300px;
+  background-color: var(--background-color);
+  border-left: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.vertical-resizer {
+  width: 6px;
+  height: 100%;
+  background-color: var(--background-color);
+  cursor: col-resize;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.vertical-resizer:hover, .vertical-resizer.active {
+  background-color: var(--accent-color);
+}
+
+.horizontal-resizer {
+  height: 6px;
+  width: 100%;
+  background-color: var(--background-color);
+  cursor: row-resize;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.horizontal-resizer:hover, .horizontal-resizer.active {
+  background-color: var(--accent-color);
+}

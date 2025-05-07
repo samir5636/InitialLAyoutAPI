@@ -1,1 +1,165 @@
-<p>tabs-area works!</p>
+<div class="tabs-container">
+  <div class="tabs-header">
+    <div class="tabs">
+      <div class="tab" [class.active]="activeTab === 'api-status'">
+        <span class="get-method">GET</span>
+        <span class="tab-title">API Status</span>
+        <button class="close-tab">×</button>
+      </div>
+      <div class="tab" [class.active]="activeTab === 'untitled'">
+        <span class="get-method">GET</span>
+        <span class="tab-title">Untitled Request</span>
+        <button class="close-tab">×</button>
+      </div>
+    </div>
+    <button class="add-tab">+</button>
+  </div>
+
+  <div class="request-container">
+    <div class="request-header">
+      <div class="method-dropdown">
+        <button class="method-button get">GET</button>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </div>
+      <div class="url-input-container">
+        <input type="text" class="url-input" value="{{baseUrl}}/books" placeholder="Enter request URL">
+      </div>
+      <button class="send-button">Send</button>
+      <button class="options-button">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+
+    <mat-tab-group class="request-tabs">
+      <mat-tab label="Params">
+        <div class="params-table">
+          <table>
+            <thead>
+            <tr>
+              <th width="40px"></th>
+              <th width="30%">Key</th>
+              <th width="30%">Value</th>
+              <th>Description</th>
+              <th width="40px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><mat-checkbox></mat-checkbox></td>
+              <td><input type="text" placeholder="Key"></td>
+              <td><input type="text" placeholder="Value"></td>
+              <td><input type="text" placeholder="Description"></td>
+              <td><button class="icon-button"><mat-icon>delete_outline</mat-icon></button></td>
+            </tr>
+            <tr>
+              <td><mat-checkbox></mat-checkbox></td>
+              <td><input type="text" placeholder="Key"></td>
+              <td><input type="text" placeholder="Value"></td>
+              <td><input type="text" placeholder="Description"></td>
+              <td><button class="icon-button"><mat-icon>delete_outline</mat-icon></button></td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="bulk-edit">
+            <button class="bulk-edit-button">Bulk Edit</button>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Authorization">
+        <div class="auth-container">
+          <div class="auth-type">
+            <label>Type</label>
+            <select class="auth-select">
+              <option>No Auth</option>
+              <option>API Key</option>
+              <option>Bearer Token</option>
+              <option>Basic Auth</option>
+              <option>OAuth 2.0</option>
+            </select>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Headers (7)">
+        <div class="params-table">
+          <table>
+            <thead>
+            <tr>
+              <th width="40px"></th>
+              <th width="30%">Key</th>
+              <th width="30%">Value</th>
+              <th>Description</th>
+              <th width="40px"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td><mat-checkbox checked="true"></mat-checkbox></td>
+              <td><input type="text" value="Content-Type"></td>
+              <td><input type="text" value="application/json"></td>
+              <td><input type="text" placeholder="Description"></td>
+              <td><button class="icon-button"><mat-icon>delete_outline</mat-icon></button></td>
+            </tr>
+            <tr>
+              <td><mat-checkbox checked="true"></mat-checkbox></td>
+              <td><input type="text" value="Accept"></td>
+              <td><input type="text" value="application/json"></td>
+              <td><input type="text" placeholder="Description"></td>
+              <td><button class="icon-button"><mat-icon>delete_outline</mat-icon></button></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </mat-tab>
+      <mat-tab label="Body">
+        <div class="body-container">
+          <div class="body-type-selector">
+            <mat-button-toggle-group>
+              <mat-button-toggle value="none">None</mat-button-toggle>
+              <mat-button-toggle value="form-data">form-data</mat-button-toggle>
+              <mat-button-toggle value="urlencoded">x-www-form-urlencoded</mat-button-toggle>
+              <mat-button-toggle value="raw" checked>raw</mat-button-toggle>
+              <mat-button-toggle value="binary">binary</mat-button-toggle>
+            </mat-button-toggle-group>
+            <select class="format-select">
+              <option>JSON</option>
+              <option>Text</option>
+              <option>XML</option>
+              <option>HTML</option>
+            </select>
+          </div>
+          <div class="editor-container">
+            <textarea class="code-editor"> respoen data</textarea>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Scripts">
+        <div class="script-container">
+          <div class="script-type-selector">
+            <mat-button-toggle-group>
+              <mat-button-toggle value="pre-request" checked>Pre-request Script</mat-button-toggle>
+              <mat-button-toggle value="test">Tests</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+          <div class="editor-container">
+            <textarea class="code-editor">// Write any pre-request JavaScript code here</textarea>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Settings">
+        <div class="settings-container">
+          <div class="setting-group">
+            <h3>Request Settings</h3>
+            <div class="setting-item">
+              <label>Request Timeout (ms)</label>
+              <input type="number" value="0">
+            </div>
+            <div class="setting-item">
+              <label>Enable SSL Certificate Verification</label>
+              <mat-checkbox checked="true"></mat-checkbox>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

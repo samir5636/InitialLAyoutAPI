@@ -1,0 +1,36 @@
+.main-content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--background-color);
+}
+
+.request-editor {
+  flex: 1 1 60%;
+  min-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.response-viewer {
+  flex: 1 1 40%;
+  min-height: 150px;
+  overflow: auto;
+  border-top: 1px solid var(--border-color);
+}
+
+.horizontal-resizer {
+  height: 6px;
+  width: 100%;
+  background-color: var(--background-color);
+  cursor: row-resize;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.horizontal-resizer:hover, .horizontal-resizer.active {
+  background-color: var(--accent-color);
+}

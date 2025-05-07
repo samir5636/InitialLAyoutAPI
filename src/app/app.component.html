@@ -1,5 +1,11 @@
-<div>
 
+<div class="main-container">
   <app-header></app-header>
-  <app-sidebar></app-sidebar>
+  <div class="content-container">
+    <app-sidebar></app-sidebar>
+    <div class="vertical-resizer" id="sidebar-resizer"></div>
+    <app-main-content class="main-content"></app-main-content>
+    <div class="vertical-resizer" id="tools-resizer"></div>
+    <app-tools-panel class="tools-panel"></app-tools-panel>
+  </div>
 </div>

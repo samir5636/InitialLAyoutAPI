@@ -7,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrl: './tabs-area.component.css'
 })
 export class TabsAreaComponent {
+  get activeTab(): string {
+    return this._activeTab;
+  }
+
+  set activeTab(value: string) {
+    this._activeTab = value;
+  }
+  private _activeTab: any;
+  baseUrl: any;
 
 }

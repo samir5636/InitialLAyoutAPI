@@ -11,10 +11,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonToggleGroup} from '@angular/material/button-toggle';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {RouterOutlet} from '@angular/router';
 import {MatList, MatListItem} from '@angular/material/list';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatTab, MatTabGroup} from '@angular/material/tabs';
 
 
 
@@ -38,11 +40,17 @@ import {MatList, MatListItem} from '@angular/material/list';
     MatSidenavModule,
     RouterOutlet,
     MatList,
-    MatListItem
+    MatListItem,
+    MatCheckbox,
+    MatTab,
+    MatButtonToggle,
+    MatTabGroup
   ],
   exports: [
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    MainContentComponent,
+    ToolsPanelComponent
   ]
 })
 export class LayoutModule { }
