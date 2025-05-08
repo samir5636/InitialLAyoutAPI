@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {LayoutModule} from './layout/layout.module';
 import {MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
+import {AngularSplitModule} from 'angular-split';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav'
     AppRoutingModule,
     LayoutModule,
     MatSidenavContainer,
-    MatSidenavContent
+    MatSidenavContent,
+    AngularSplitModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

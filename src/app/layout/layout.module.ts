@@ -42,7 +42,9 @@ import {MatList, MatListItem} from '@angular/material/list';
   ],
   exports: [
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    ToolsPanelComponent,
+    TabsAreaComponent
   ]
 })
 export class LayoutModule { }
