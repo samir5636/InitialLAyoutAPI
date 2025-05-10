@@ -3,11 +3,13 @@
   display: flex;
   height: calc(100vh - 45px); /* Subtract header height */
   overflow: hidden;
-
+  width: 100%;
 }
 
 .sidebar-nav {
-  width: 64px;
+  min-width: 64px;
+  max-width: 64px;
+  flex: 0 0 64px;
   background-color: var(--sidebar-bg);
   color: var(--sidebar-color);
   display: flex;
@@ -51,7 +53,8 @@
 }
 
 .sidebar-content {
-  width: 300px;
+  flex: 1;
+  min-width: 0;
   background-color: var(--sidebar-bg);
   color: var(--sidebar-color);
   border-right: 1px solid #424242;

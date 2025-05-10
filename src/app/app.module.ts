@@ -10,7 +10,7 @@ import {AngularSplitModule} from 'angular-split';
 
 @NgModule({
   declarations: [
-    AppComponent
+
   ],
   imports: [
     BrowserModule,
@@ -19,6 +19,7 @@ import {AngularSplitModule} from 'angular-split';
     MatSidenavContainer,
     MatSidenavContent,
     AngularSplitModule,
+    AppComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,23 +1,35 @@
-<div class="containner">
+<div class="container">
   <app-header></app-header>
-  <as-split direction="horizontal" class="main-content">
-    <as-split-area [size]="20" class="sidebar-container">
+  <as-split direction="horizontal" unit="percent" class="main-content">
+    <!-- Left sidebar section -->
+    <as-split-area [size]="20" [minSize]="15" [maxSize]="65" class="sidebar-container">
       <app-sidebar></app-sidebar>
     </as-split-area>
-    <as-split-area [size]="80">
-      <as-split direction="vertical" [gutterSize]="6">
+
+    <!-- Main center section -->
+    <as-split-area [size]="60" [minSize]="20">
+      <as-split direction="vertical" unit="percent" [gutterSize]="6">
         <!-- Request Pane -->
-        <as-split-area [size]="60">
-          <div> samir</div>
+        <as-split-area [size]="60" [minSize]="15">
+          <div class="request-pane">
+            <app-tabs-area></app-tabs-area>
+          </div>
         </as-split-area>
 
         <!-- Response Pane -->
         <as-split-area [size]="40">
-          <div>ziani</div>
+          <div class="response-pane">
+            <app-response-area></app-response-area>
+          </div>
         </as-split-area>
       </as-split>
     </as-split-area>
 
+    <!-- Right tools panel section -->
+    <as-split-area [size]="20" [minSize]="5" [maxSize]="35">
+      <div class="tools-pane">
+        <app-tools-panel></app-tools-panel>
+      </div>
+    </as-split-area>
   </as-split>
-
 </div>
