@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {LayoutModule} from './layout/layout.module';
 import {SplitAreaComponent, SplitComponent} from 'angular-split';
+import {isPlatformBrowser} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -16,67 +17,68 @@ export class AppComponent implements OnInit {
   title = 'apilotLayout';
 
   // Default split sizes
-  sidebarSize = 20;
-  mainContentSize = 60;
-  toolsPanelSize = 20;
+  sidebarSize: number = 20;
+  mainContentSize: number = 60;
+  toolsPanelSize: number = 20;
 
   // Vertical split settings
-  requestPaneSize = 60;
-  responsePaneSize = 40;
+  requestPaneSize: number = 60;
+  responsePaneSize: number = 40;
+
+  // Flag to check if we're in browser
+  private isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit() {
-    // Load saved split sizes from localStorage if available
-    this.loadSplitSizes();
-  }
-
-  // Save current split sizes when they change
-  onHorizontalDragEnd(sizes: number[]) {
-    if (sizes && sizes.length === 3) {
-      this.sidebarSize = sizes[0];
-      this.mainContentSize = sizes[1];
-      this.toolsPanelSize = sizes[2];
-
-      localStorage.setItem('horizontalSplitSizes', JSON.stringify(sizes));
+    if (this.isBrowser) {
+      this.loadSplitSizes();
     }
   }
 
-  onVerticalDragEnd(sizes: number[]) {
-    if (sizes && sizes.length === 2) {
-      this.requestPaneSize = sizes[0];
-      this.responsePaneSize = sizes[1];
+  onHorizontalDragEnd(event: any) {
+    if (!event.sizes || event.sizes.length !== 3 || !this.isBrowser) return;
 
-      localStorage.setItem('verticalSplitSizes', JSON.stringify(sizes));
-    }
+    this.sidebarSize = Number(event.sizes[0]);
+    this.mainContentSize = Number(event.sizes[1]);
+    this.toolsPanelSize = Number(event.sizes[2]);
+    localStorage.setItem('horizontalSplitSizes', JSON.stringify(event.sizes));
+  }
+
+  onVerticalDragEnd(event: any) {
+    if (!event.sizes || event.sizes.length !== 2 || !this.isBrowser) return;
+
+    this.requestPaneSize = Number(event.sizes[0]);
+    this.responsePaneSize = Number(event.sizes[1]);
+    localStorage.setItem('verticalSplitSizes', JSON.stringify(event.sizes));
   }
 
   private loadSplitSizes() {
-    // Load horizontal split sizes
-    const horizontalSizesStr = localStorage.getItem('horizontalSplitSizes');
-    if (horizontalSizesStr) {
-      try {
+    if (!this.isBrowser) return;
+
+    try {
+      const horizontalSizesStr = localStorage.getItem('horizontalSplitSizes');
+      if (horizontalSizesStr) {
         const sizes = JSON.parse(horizontalSizesStr);
         if (sizes && sizes.length === 3) {
-          this.sidebarSize = sizes[0];
-          this.mainContentSize = sizes[1];
-          this.toolsPanelSize = sizes[2];
+          this.sidebarSize = Number(sizes[0]);
+          this.mainContentSize = Number(sizes[1]);
+          this.toolsPanelSize = Number(sizes[2]);
         }
-      } catch (e) {
-        console.error('Failed to parse horizontal split sizes from localStorage');
       }
-    }
 
-    // Load vertical split sizes
-    const verticalSizesStr = localStorage.getItem('verticalSplitSizes');
-    if (verticalSizesStr) {
-      try {
+      const verticalSizesStr = localStorage.getItem('verticalSplitSizes');
+      if (verticalSizesStr) {
         const sizes = JSON.parse(verticalSizesStr);
         if (sizes && sizes.length === 2) {
-          this.requestPaneSize = sizes[0];
-          this.responsePaneSize = sizes[1];
+          this.requestPaneSize = Number(sizes[0]);
+          this.responsePaneSize = Number(sizes[1]);
         }
-      } catch (e) {
-        console.error('Failed to parse vertical split sizes from localStorage');
       }
+    } catch (e) {
+      console.error('Failed to parse split sizes from localStorage', e);
     }
   }
 }
