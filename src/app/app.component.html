@@ -26,8 +26,11 @@
     </as-split-area>
 
     <!-- Right tools panel section -->
-    <as-split-area [size]="toolsPanelSize" [minSize]="10" [maxSize]="35">
-      <app-tools-panel></app-tools-panel>
-    </as-split-area>
+
+      <as-split-area [size]="toolsPanelSize" [minSize]="10" [maxSize]="35">
+        <div class="tools-pane">
+          <app-tools-panel></app-tools-panel>
+        </div>
+      </as-split-area>
   </as-split>
 </div>
