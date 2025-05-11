@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   // Vertical split settings
   requestPaneSize: number = 60;
   responsePaneSize: number = 40;
+  panelMinSize: number = 20;
 
   // Flag to check if we're in browser
   private isBrowser: boolean;

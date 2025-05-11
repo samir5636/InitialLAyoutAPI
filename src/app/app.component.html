@@ -2,12 +2,12 @@
   <app-header></app-header>
   <as-split direction="horizontal" unit="percent" class="main-content" (dragEnd)="onHorizontalDragEnd($event)">
     <!-- Left sidebar section -->
-    <as-split-area [size]="sidebarSize" [minSize]="10" [maxSize]="65" class="sidebar-container">
+    <as-split-area [size]="sidebarSize" [minSize]="15" [maxSize]="65" class="sidebar-container">
       <app-sidebar></app-sidebar>
     </as-split-area>
 
     <!-- Main center section -->
-    <as-split-area [size]="mainContentSize">
+    <as-split-area [size]="mainContentSize" [minSize]="panelMinSize">
       <as-split direction="vertical" unit="percent" [gutterSize]="6" (dragEnd)="onVerticalDragEnd($event)">
         <!-- Request Pane -->
         <as-split-area [size]="requestPaneSize" [minSize]="15">
