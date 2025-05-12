@@ -2,6 +2,7 @@ import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import {LayoutModule} from './layout/layout.module';
 import {SplitAreaComponent, SplitComponent} from 'angular-split';
 import {isPlatformBrowser} from '@angular/common';
+import {RequestEditorComponent} from './features/request/request-editor/request-editor.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import {isPlatformBrowser} from '@angular/common';
   imports: [
     LayoutModule,
     SplitComponent,
-    SplitAreaComponent
+    SplitAreaComponent,
+    RequestEditorComponent
   ],
   styleUrl: './app.component.css'
 })

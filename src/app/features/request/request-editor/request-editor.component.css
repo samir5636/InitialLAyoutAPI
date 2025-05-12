@@ -1,0 +1,99 @@
+.request-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.url-method-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+}
+
+.method-select {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.url-input {
+  flex-grow: 1;
+}
+
+.send-button {
+  width: 100px;
+  flex-shrink: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.tab-content {
+  padding: 16px;
+  height: calc(100% - 48px); /* Subtract the height of the tab headers */
+}
+
+.key-value-table {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  vertical-align: top;
+}
+
+.enable-column {
+  width: 60px;
+}
+
+.action-column {
+  width: 60px;
+  text-align: center;
+}
+
+.editor-container {
+  height: 300px;
+  border: 1px solid #ccc;
+}
+
+.get-body-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid #ccc;
+}
+
+.add-row {
+  margin-top: 8px;
+}
+
+/* Make sure the form takes up the full height */
+form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the tab group take up the remaining height */
+::ng-deep .mat-tab-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .mat-tab-body-wrapper {
+  flex: 1;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}

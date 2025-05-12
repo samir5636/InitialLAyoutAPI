@@ -1,1 +1,143 @@
-<p>request-editor works!</p>
+<div class="request-editor">
+  <form [formGroup]="requestForm" (ngSubmit)="sendRequest()">
+    <!-- URL and Method Row -->
+    <div class="url-method-container">
+      <div class="method-select">
+        <mat-form-field appearance="fill">
+          <mat-label>Method</mat-label>
+          <mat-select formControlName="method">
+            <mat-option *ngFor="let method of httpMethods" [value]="method">
+              {{ method }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="url-input">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Request URL</mat-label>
+          <input matInput placeholder="https://api.example.com/endpoint" formControlName="url">
+          <mat-error *ngIf="requestForm.get('url')?.hasError('required')">
+            URL is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="send-button">
+        <button mat-raised-button color="primary" type="submit" [disabled]="requestForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Send</span>
+          <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs Section -->
+    <mat-tab-group>
+      <!-- Params Tab -->
+      <mat-tab label="Params">
+        <div class="tab-content">
+          <div class="key-value-table">
+            <table>
+              <thead>
+              <tr>
+                <th class="enable-column">Enabled</th>
+                <th>Key</th>
+                <th>Value</th>
+                <th class="action-column">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let param of params; let i = index">
+                <td>
+                  <mat-checkbox [(ngModel)]="param.enabled" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <input matInput [(ngModel)]="param.key" [ngModelOptions]="{standalone: true}" placeholder="Parameter name">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <input matInput [(ngModel)]="param.value" [ngModelOptions]="{standalone: true}" placeholder="Parameter value">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button mat-icon-button color="warn" type="button" (click)="removeParam(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="add-row">
+              <button mat-button type="button" (click)="addParam()">
+                <mat-icon>add</mat-icon> Add Parameter
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Headers Tab -->
+      <mat-tab label="Headers">
+        <div class="tab-content">
+          <div class="key-value-table">
+            <table>
+              <thead>
+              <tr>
+                <th class="enable-column">Enabled</th>
+                <th>Key</th>
+                <th>Value</th>
+                <th class="action-column">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let header of headers; let i = index">
+                <td>
+                  <mat-checkbox [(ngModel)]="header.enabled" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <input matInput [(ngModel)]="header.key" [ngModelOptions]="{standalone: true}" placeholder="Header name">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <input matInput [(ngModel)]="header.value" [ngModelOptions]="{standalone: true}" placeholder="Header value">
+                  </mat-form-field>
+                </td>
+                <td>
+                  <button mat-icon-button color="warn" type="button" (click)="removeHeader(i)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="add-row">
+              <button mat-button type="button" (click)="addHeader()">
+                <mat-icon>add</mat-icon> Add Header
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Body Tab -->
+      <mat-tab label="Body">
+        <div class="tab-content">
+          <!-- Only show body editor for non-GET requests -->
+          <div *ngIf="requestForm.get('method')?.value !== 'GET'">
+            <div class="editor-container">
+              <ngx-monaco-editor [options]="bodyEditorOptions" formControlName="body"></ngx-monaco-editor>
+            </div>
+          </div>
+
+          <div *ngIf="requestForm.get('method')?.value === 'GET'" class="get-body-message">
+            <p>A body is not applicable for GET requests.</p>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+</div>

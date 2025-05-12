@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {LayoutModule} from './layout/layout.module';
 import {MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
 import {AngularSplitModule} from 'angular-split';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -19,9 +20,10 @@ import {AngularSplitModule} from 'angular-split';
     MatSidenavContainer,
     MatSidenavContent,
     AngularSplitModule,
-    AppComponent,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
