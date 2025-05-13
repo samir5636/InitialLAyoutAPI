@@ -4,7 +4,9 @@
   height: 100vh;
   overflow: hidden;
 }
-
+.main-content {
+  background-color: var(--background-color);
+}
 .main-content {
   flex: 1;
   height: calc(100vh - 45px); /* Subtract header height */
@@ -41,18 +43,18 @@
 /* Just to make it visually distinct during development */
 .request-pane {
   background-color: var(--background-color);
-  color:white;
+  color:var(--text-color);
 }
 
 .response-pane {
   background-color: var(--background-color);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  color:white;
+  color:var(--text-color);
 }
 .tools-pane{
   background-color: var(--background-color);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  color:white;
+  color:var(--text-color);
 }
 
 /* Dark theme adjustments */

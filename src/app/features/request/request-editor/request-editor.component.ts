@@ -1,49 +1,42 @@
-import {Component, OnInit, Type, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { HttpMethod} from '../../../core/models/http-method.enum';
+// request-editor.component.ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpMethod } from '../../../core/models/http-method.enum';
 import { HttpClientService } from '../../../core/services/http-client.service';
 import { KeyValuePair } from '../../../core/models/request.model';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatIconModule} from '@angular/material/icon';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
 
 @Component({
   selector: 'app-request-editor',
   templateUrl: './request-editor.component.html',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    MatTabsModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MonacoEditorModule,
-    FormsModule,
-    // If using ngx-monaco-editor
-  ],
-  styleUrls: ['./request-editor.component.css']
+  styleUrls: ['./request-editor.component.css'],
+  standalone: false,
 })
 export class RequestEditorComponent implements OnInit {
   requestForm!: FormGroup;
   httpMethods = Object.values(HttpMethod);
 
-  // Default empty arrays for headers and params
   headers: KeyValuePair[] = [{ key: '', value: '', enabled: true }];
   params: KeyValuePair[] = [{ key: '', value: '', enabled: true }];
 
-  // Response data
   responseData: any = null;
   isLoading = false;
-  bodyEditorOptions = { theme: 'vs-dark', language: 'json', automaticLayout: true };
+
+  // Declare bodyType property
+  bodyType: 'none' | 'json' | 'text' | 'form' = 'json'; // Default to JSON
+
+  // Monaco editor options with improved configuration
+  bodyEditorOptions = {
+    theme: 'vs-dark',
+    language: 'json', // Initial language
+    automaticLayout: true, // Important for resizing
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    folding: true,
+    lineNumbers: 'on',
+    roundedSelection: true,
+    contextmenu: true,
+    wordWrap: 'on'
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -52,14 +45,74 @@ export class RequestEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    this.setupDefaultHeaders();
+
+    // Initial language setting based on default bodyType
+    this.updateBodyEditorLanguage(this.bodyType);
+
+    // Listen to global theme changes
+    window.addEventListener('themeChange', (event: any) => {
+      this.setMonacoTheme(event.detail);
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme === 'dark' ? 'vs-dark' : 'vs-light';
+    this.setMonacoTheme(theme);
   }
 
   initForm(): void {
     this.requestForm = this.fb.group({
-      url: ['', [Validators.required]],
+      url: ['https://api.example.com/endpoint', [Validators.required]],
       method: [HttpMethod.GET, [Validators.required]],
-      body: ['']
+      body: ['{\n  "key": "value"\n}']
     });
+
+    // React to method changes to update body validation
+    this.requestForm.get('method')?.valueChanges.subscribe(method => {
+      if (method === HttpMethod.GET) {
+        this.requestForm.get('body')?.disable();
+      } else {
+        this.requestForm.get('body')?.enable();
+      }
+    });
+  }
+
+  // Method to update editor language dynamically
+  updateBodyEditorLanguage(type: 'none' | 'json' | 'text' | 'form'): void {
+    let language: string;
+    switch (type) {
+      case 'json':
+        language = 'json';
+        break;
+      case 'text':
+        language = 'plaintext';
+        break;
+      case 'form':
+        language = 'plaintext'; // Or 'xml', 'html' if you expect certain form data formats
+        break;
+      case 'none':
+      default:
+        language = 'plaintext';
+        break;
+    }
+    // Create a new options object to trigger change detection in ngx-monaco-editor
+    this.bodyEditorOptions = { ...this.bodyEditorOptions, language: language };
+  }
+
+  setMonacoTheme(theme: 'vs-light' | 'vs-dark') {
+    this.bodyEditorOptions = {
+      ...this.bodyEditorOptions,
+      theme
+    };
+  }
+
+
+  setupDefaultHeaders(): void {
+    this.headers = [
+      { key: 'Content-Type', value: 'application/json', enabled: true },
+      { key: 'Accept', value: 'application/json', enabled: true },
+      { key: '', value: '', enabled: true }
+    ];
   }
 
   addHeader(): void {
@@ -95,8 +148,8 @@ export class RequestEditorComponent implements OnInit {
     const formValue = this.requestForm.value;
     let body = null;
 
-    // Try to parse the JSON body if it's not empty
-    if (formValue.body && formValue.body.trim()) {
+    // Try to parse the JSON body if it's not empty and not a GET request and bodyType is JSON
+    if (formValue.method !== HttpMethod.GET && this.bodyType === 'json' && formValue.body && formValue.body.trim()) {
       try {
         body = JSON.parse(formValue.body);
       } catch (e) {
@@ -105,18 +158,22 @@ export class RequestEditorComponent implements OnInit {
         this.isLoading = false;
         return;
       }
+    } else if (formValue.method !== HttpMethod.GET && (this.bodyType === 'text' || this.bodyType === 'form')) {
+      body = formValue.body; // Send as plain text for 'text' or 'form' types
     }
+
 
     this.httpClientService.sendRequest(
       formValue.url,
       formValue.method,
-      this.headers,
-      this.params,
+      this.headers.filter(h => h.key.trim() !== ''),
+      this.params.filter(p => p.key.trim() !== ''),
       body
     ).subscribe({
       next: (response) => {
         this.responseData = response;
         this.isLoading = false;
+        console.log('Response received:', this.responseData);
       },
       error: (error) => {
         console.error('Request error', error);

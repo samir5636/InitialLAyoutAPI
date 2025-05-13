@@ -3,19 +3,17 @@
     <!-- URL and Method Row -->
     <div class="url-method-container">
       <div class="method-select">
-        <mat-form-field appearance="fill">
-          <mat-label>Method</mat-label>
+        <mat-form-field appearance="outline">
           <mat-select formControlName="method">
             <mat-option *ngFor="let method of httpMethods" [value]="method">
-              {{ method }}
+              <span class="method-span">{{ method }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       <div class="url-input">
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Request URL</mat-label>
+        <mat-form-field appearance="outline" class="full-width">
           <input matInput placeholder="https://api.example.com/endpoint" formControlName="url">
           <mat-error *ngIf="requestForm.get('url')?.hasError('required')">
             URL is required
@@ -32,7 +30,7 @@
     </div>
 
     <!-- Tabs Section -->
-    <mat-tab-group>
+    <mat-tab-group animationDuration="0ms" class="request-tabs">
       <!-- Params Tab -->
       <mat-tab label="Params">
         <div class="tab-content">
@@ -124,17 +122,54 @@
       </mat-tab>
 
       <!-- Body Tab -->
+
       <mat-tab label="Body">
         <div class="tab-content">
-          <!-- Only show body editor for non-GET requests -->
-          <div *ngIf="requestForm.get('method')?.value !== 'GET'">
+          <div class="body-type-selector">
+            <mat-button-toggle-group [(ngModel)]="bodyType" [ngModelOptions]="{standalone: true}" (ngModelChange)="updateBodyEditorLanguage(bodyType)">
+              <mat-button-toggle value="none">None</mat-button-toggle>
+              <mat-button-toggle value="json">JSON</mat-button-toggle>
+              <mat-button-toggle value="text">Text</mat-button-toggle>
+              <mat-button-toggle value="form">Form</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
+          <!-- Only show body editor for non-GET requests and when bodyType is not 'none' -->
+          <div *ngIf="requestForm.get('method')?.value !== 'GET' && bodyType !== 'none'">
             <div class="editor-container">
-              <ngx-monaco-editor [options]="bodyEditorOptions" formControlName="body"></ngx-monaco-editor>
+              <!-- Ensure editor container has height (e.g., via CSS) -->
+              <ngx-monaco-editor
+                [options]="bodyEditorOptions"
+                formControlName="body">
+              </ngx-monaco-editor>
             </div>
           </div>
 
-          <div *ngIf="requestForm.get('method')?.value === 'GET'" class="get-body-message">
-            <p>A body is not applicable for GET requests.</p>
+          <div *ngIf="requestForm.get('method')?.value === 'GET' || bodyType === 'none'" class="get-body-message">
+            <p>A body is not applicable for this request.</p>
+          </div>
+        </div>
+      </mat-tab>
+
+
+      <!-- Auth Tab -->
+      <mat-tab label="Auth">
+        <div class="tab-content">
+          <div class="auth-type-selector">
+            <mat-form-field appearance="outline">
+              <mat-label>Auth Type</mat-label>
+              <mat-select value="none">
+                <mat-option value="none">No Auth</mat-option>
+                <mat-option value="basic">Basic Auth</mat-option>
+                <mat-option value="bearer">Bearer Token</mat-option>
+                <mat-option value="oauth2">OAuth 2.0</mat-option>
+                <mat-option value="apikey">API Key</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="auth-content">
+            <p>Select an authentication type to configure it</p>
           </div>
         </div>
       </mat-tab>

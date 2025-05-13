@@ -6,6 +6,8 @@
   background-color: var(--header-bg);
   color: var(--header-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #424242;
+
 }
 
 /* style for left section */
@@ -21,8 +23,14 @@
 
 .nav-toggle button {
   font-size: 0.875rem;
-  color: var(--header-color);
+  color: var(--text-color);
   text-transform: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  box-shadow: none;
+
 }
 .brand-container {
   display: flex;

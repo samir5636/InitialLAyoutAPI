@@ -6,7 +6,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   /* header*/
   --header-bg: #ffffff;
   --header-color: #000000;
-  --background-color: #f5f5f5;
+  --background-color: #ffffff;
   --invite-bg: #AA23FF;
 
   /* sidebar*/
@@ -14,6 +14,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --sidebar-color: #000;
   --sidebar-hover-bg: #AA23FF;
   --sidebar-filter-bg: #bdbdbd;
+  /*text*/
+  --text-color: #000000;
+
+  /* request editor */
+
+  --perple-color: #AA23FF
+
 
 }
 
@@ -27,7 +34,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --sidebar-bg: #2d2d2d;
   --sidebar-color: #ffffff;
   --sidebar-hover-bg: #424242;
-  --sidebar-filter-bg: #2d2d2d
+  --sidebar-filter-bg: #2d2d2d;
+
+  /*text*/
+  --text-color: #ffffff;
+
+  /* request editor */
+
+  --perple-color: #AA23FF
 }
 
 body {

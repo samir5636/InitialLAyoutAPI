@@ -4,37 +4,97 @@
   flex-direction: column;
 }
 
+.request-editor, .request-editor * {
+  color: var(--text-color);
+}
+
+.mat-button, .mat-select-value, .mat-form-field-label, .mat-input-element {
+  color: var(--text-color) !important;
+}
+
+
+
+
+
+
+/* URL and Method Container - Postman-like styling */
 .url-method-container {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 10px;
-  gap: 10px;
+  padding: 8px 12px;
+  gap: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
 }
 
 .method-select {
-  width: 120px;
+  width: 110px;
   flex-shrink: 0;
+  color: var(--text-color);
+}
+
+/* Override mat-form-field styles to match Postman's compact look */
+.method-select ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+}
+
+.method-select ::ng-deep .mat-mdc-text-field-wrapper {
+  padding: 0 !important;
+}
+
+.method-select ::ng-deep .mat-mdc-form-field-infix {
+  padding: 8px 0 !important;
+  min-height: unset !important;
 }
 
 .url-input {
   flex-grow: 1;
 }
 
+.url-input ::ng-deep .mat-mdc-form-field-infix {
+  padding: 8px 0 !important;
+  min-height: unset !important;
+}
+
 .send-button {
-  width: 100px;
-  flex-shrink: 0;
+  width: 80px;
+}
+
+.send-button button {
+  background-color: var(--perple-color);
+  color: var(--text-color);
+  height: 36px;
 }
 
 .full-width {
   width: 100%;
 }
 
-.tab-content {
-  padding: 16px;
-  height: calc(100% - 48px); /* Subtract the height of the tab headers */
+.request-tabs ::ng-deep .mat-mdc-tab-header {
+  background-color: var(--background-color);
+  border-radius: 4px 4px 0 0;
 }
 
+.request-tabs ::ng-deep .mat-mdc-tab {
+  min-width: 80px;
+  padding: 0 16px;
+}
+
+.request-tabs ::ng-deep .mat-mdc-tab-body-wrapper {
+  flex: 1;
+  background-color: var(--background-color);
+  border-radius: 0 0 4px 4px;
+
+}
+
+.tab-content {
+  padding: 16px;
+  height: calc(100% - 16px);
+  overflow: auto;
+}
+
+/* Key-value table styling */
 .key-value-table {
   width: 100%;
 }
@@ -45,8 +105,17 @@ table {
 }
 
 th, td {
-  padding: 8px;
-  vertical-align: top;
+  padding: 4px 8px;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  font-weight: 500;
+  color: #666;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .enable-column {
@@ -54,13 +123,30 @@ th, td {
 }
 
 .action-column {
-  width: 60px;
+  width: 50px;
   text-align: center;
 }
 
+/* Styling form fields to be more compact */
+td mat-form-field {
+  margin: 0;
+}
+
+td ::ng-deep .mat-mdc-form-field-infix {
+  padding: 8px 0 !important;
+  min-height: unset !important;
+}
+
+td ::ng-deep .mat-mdc-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+/* Editor styling */
 .editor-container {
   height: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 12px;
 }
 
 .get-body-message {
@@ -69,11 +155,21 @@ th, td {
   justify-content: center;
   height: 300px;
   background-color: rgba(0, 0, 0, 0.03);
-  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  margin-top: 12px;
+  color: #666;
 }
 
 .add-row {
   margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.add-row button {
+  font-size: 14px;
+  color: var(--perple-color); /* Postman orange */
 }
 
 /* Make sure the form takes up the full height */
@@ -94,6 +190,44 @@ form {
   flex: 1;
 }
 
+/* Body type selector styling */
+.body-type-selector {
+  margin-bottom: 12px;
+}
+
+.body-type-selector ::ng-deep .mat-button-toggle-group {
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.body-type-selector ::ng-deep .mat-button-toggle {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.body-type-selector ::ng-deep .mat-button-toggle-checked {
+  background-color: #e0e0e0;
+  /*color: #000;*/
+}
+
+/* Auth styling */
+.auth-type-selector {
+  max-width: 300px;
+  margin-bottom: 16px;
+}
+
+.auth-content {
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Loading spinner */
 mat-spinner {
   margin: 0 auto;
 }
+
+
+
+
