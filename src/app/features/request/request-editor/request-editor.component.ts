@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HttpMethod } from '../../../core/models/http-method.enum';
 import { HttpClientService } from '../../../core/services/http-client.service';
 import { KeyValuePair } from '../../../core/models/request.model';
+import {ResponseService} from '../../../core/services/response.service';
 
 @Component({
   selector: 'app-request-editor',
@@ -40,7 +41,8 @@ export class RequestEditorComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private httpClientService: HttpClientService
+    private httpClientService: HttpClientService,
+    private responseService: ResponseService // Inject the new ResponseService
   ) { }
 
   ngOnInit(): void {
@@ -137,6 +139,7 @@ export class RequestEditorComponent implements OnInit {
     }
   }
 
+
   sendRequest(): void {
     if (this.requestForm.invalid) {
       return;
@@ -144,6 +147,9 @@ export class RequestEditorComponent implements OnInit {
 
     this.isLoading = true;
     this.responseData = null;
+
+    // Clear any previous response data
+    this.responseService.clearResponseData();
 
     const formValue = this.requestForm.value;
     let body = null;
@@ -162,7 +168,6 @@ export class RequestEditorComponent implements OnInit {
       body = formValue.body; // Send as plain text for 'text' or 'form' types
     }
 
-
     this.httpClientService.sendRequest(
       formValue.url,
       formValue.method,
@@ -174,6 +179,9 @@ export class RequestEditorComponent implements OnInit {
         this.responseData = response;
         this.isLoading = false;
         console.log('Response received:', this.responseData);
+
+        // Update the response data in the service
+        this.responseService.updateResponseData(response);
       },
       error: (error) => {
         console.error('Request error', error);
@@ -183,6 +191,9 @@ export class RequestEditorComponent implements OnInit {
           details: error
         };
         this.isLoading = false;
+
+        // Also update the response service with error data
+        this.responseService.updateResponseData(this.responseData);
       }
     });
   }

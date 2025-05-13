@@ -1,16 +1,18 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http'; // For type checking
+import { Component, Input, OnChanges, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
+import { HttpHeaders } from '@angular/common/http';
+import { ResponseService} from '../../core/services/response.service';
+import { Subscription } from 'rxjs';
 
 // More specific interface for cookie properties
 interface ResponseCookieProperties {
   Path?: string;
-  Expires?: string | Date; // Dates might come as strings or be parsed to Date
+  Expires?: string | Date;
   Domain?: string;
   Secure?: boolean;
   HttpOnly?: boolean;
   SameSite?: 'Strict' | 'Lax' | 'None';
-  "Max-Age"?: number; // Handle keys with hyphens if they come that way
-  [otherKey: string]: string | boolean | number | Date | undefined; // For any other non-standard attributes
+  "Max-Age"?: number;
+  [otherKey: string]: string | boolean | number | Date | undefined;
 }
 
 interface ResponseCookie {
@@ -25,8 +27,10 @@ interface ResponseCookie {
   styleUrls: ['./response-area.component.css'],
   standalone: false
 })
-export class ResponseAreaComponent implements OnChanges {
-  @Input() responseData: any; // This can be an HttpResponse<any> or your custom wrapper
+export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() responseData: any; // Still keep the input for flexibility
+
+  private subscription: Subscription = new Subscription();
 
   formattedBody: string = '';
   responseTime: number = 0;
@@ -38,7 +42,7 @@ export class ResponseAreaComponent implements OnChanges {
 
   editorOptions = {
     theme: 'vs-dark',
-    language: 'plaintext', // Default, will be updated
+    language: 'plaintext',
     readOnly: true,
     automaticLayout: true,
     minimap: { enabled: false },
@@ -51,9 +55,26 @@ export class ResponseAreaComponent implements OnChanges {
     folding: true,
   };
 
-  constructor() { }
+  constructor(private responseService: ResponseService) { }
+
+  ngOnInit(): void {
+    // Subscribe to response data from the service
+    this.subscription = this.responseService.responseData$.subscribe(data => {
+      if (data) {
+        this.processResponse(data);
+      } else {
+        this.resetView();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscription when component is destroyed
+    this.subscription.unsubscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Still handle input changes if provided
     if (changes['responseData']) {
       if (changes['responseData'].currentValue) {
         this.processResponse(changes['responseData'].currentValue);
@@ -179,6 +200,6 @@ export class ResponseAreaComponent implements OnChanges {
     }
 
     this.responseSize = response.responseSize !== undefined ? response.responseSize : (this.formattedBody ? new TextEncoder().encode(this.formattedBody).length : 0);
-    this.cookies = response.cookies || []; // Expects cookies to be pre-parsed
+    this.cookies = response.cookies?.cookies || []; // Handle either response.cookies or response.cookies.cookies
   }
 }
