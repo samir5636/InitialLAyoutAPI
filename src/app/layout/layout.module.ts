@@ -11,10 +11,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonToggleGroup} from '@angular/material/button-toggle';
+import {MatButtonToggleGroup, MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {RouterOutlet} from '@angular/router';
-import {MatList, MatListItem} from '@angular/material/list';
+import {RouterModule, RouterOutlet} from '@angular/router';
+import {MatList, MatListItem, MatListModule} from '@angular/material/list';
+import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
+import {MatTabsModule} from '@angular/material/tabs';
+import {FormsModule} from '@angular/forms';
 
 
 
@@ -24,11 +27,13 @@ import {MatList, MatListItem} from '@angular/material/list';
     SidebarComponent,
     MainContentComponent,
     TabsAreaComponent,
+    ToolsPanelComponent,
     ResponseAreaComponent,
-    ToolsPanelComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    RouterModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -38,7 +43,13 @@ import {MatList, MatListItem} from '@angular/material/list';
     MatSidenavModule,
     RouterOutlet,
     MatList,
-    MatListItem
+    MatListItem,
+    MatTabsModule,
+    MatButtonToggleModule,
+    MatListModule,
+
+
+    MonacoEditorModule,
   ],
   exports: [
     HeaderComponent,
