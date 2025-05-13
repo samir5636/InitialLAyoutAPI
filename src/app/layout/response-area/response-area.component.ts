@@ -21,6 +21,8 @@ interface ResponseCookie {
   properties?: ResponseCookieProperties;
 }
 
+declare const monaco: any;
+
 @Component({
   selector: 'app-response-area',
   templateUrl: './response-area.component.html',
@@ -66,6 +68,10 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
         this.resetView();
       }
     });
+
+    window.addEventListener('themeChange', (event: any) => {
+      this.setMonacoTheme(event.detail);
+    });
   }
 
   ngOnDestroy(): void {
@@ -82,6 +88,10 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
         this.resetView();
       }
     }
+  }
+
+  setMonacoTheme(theme: 'vs-light' | 'vs-dark') {
+      theme
   }
 
   private resetView(): void {
