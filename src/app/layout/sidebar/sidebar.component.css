@@ -20,7 +20,7 @@
 }
 
 .nav-item {
-  width: 48px;
+  width: 50px;
   height: 48px;
   display: flex;
   flex-direction: column;
@@ -35,11 +35,11 @@
 .nav-item mat-icon {
   font-size: 20px;
   height: 20px;
-  width: 20px;
+  width: 25px;
 }
 
 .nav-item span {
-  font-size: 10px;
+  font-size: 9px;
   margin-top: 4px;
 }
 

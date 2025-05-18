@@ -17,10 +17,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2d2d2d;
-  border-bottom: 1px solid #444;
-  padding: 12px 16px;
+  background: var(--background-color);
+  padding: 2px 0px;
   font-size: 14px;
+  height: 20px;
 }
 
 .status-container {
@@ -69,7 +69,7 @@
 }
 
 mat-tab-group {
-  background-color: #1e1e1e;
+  background-color: var(--background-color);
   color: #ddd;
 }
 
@@ -80,15 +80,11 @@ mat-tab-group {
 .tab-content {
   padding: 16px;
   font-size: 13px;
-  background-color: #1e1e1e;
-  border-top: 1px solid #333;
-  min-height: 200px;
-  overflow-y: auto;
+  background-color: var(--background-color);
 }
 
 .editor-container {
-  height: 300px;
-  border: 1px solid #444;
+  height: auto;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -108,7 +104,7 @@ mat-tab-group {
 }
 
 .key-value-table th {
-  background-color: #2c2c2c;
+  background-color: var(--perple-color);
 }
 
 .no-data {

@@ -64,7 +64,7 @@ export class RequestEditorComponent implements OnInit {
 
   initForm(): void {
     this.requestForm = this.fb.group({
-      url: ['https://api.example.com/endpoint', [Validators.required]],
+      url: ['https://simple-books-api.glitch.me', [Validators.required]],
       method: [HttpMethod.GET, [Validators.required]],
       body: ['{\n  "key": "value"\n}']
     });

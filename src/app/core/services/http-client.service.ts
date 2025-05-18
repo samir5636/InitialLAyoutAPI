@@ -7,7 +7,7 @@ import { HttpMethod } from '../models/http-method.enum';
   providedIn: 'root'
 })
 export class HttpClientService {
-  private apiUrl = 'http://localhost:5051/api/PerformRequest'; // API endpoint from your
+  private apiUrl = 'http://localhost:5051/PerformRequest'; // API endpoint from your
 
   constructor(private http: HttpClient) { }
 

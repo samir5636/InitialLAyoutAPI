@@ -8,14 +8,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --border-color:#e2e2e2;
 
   /* header*/
-  --header-bg: #ffffff;
+  --header-bg: #F8FAFC;
   --header-color: #000000;
   --background-color: #ffffff;
   --invite-bg: #AA23FF;
 
 
   /* sidebar*/
-  --sidebar-bg: #ffffff;
+  --sidebar-bg: #F8FAFC;
   --sidebar-color: #000;
   --sidebar-hover-bg: #AA23FF;
   --sidebar-filter-bg: #bdbdbd;
