@@ -19,6 +19,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatIconModule} from '@angular/material/icon';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
     MatIconModule,
     MatProgressSpinnerModule,
     FormsModule,
-    MonacoEditorModule // <-- Add MonacoEditorModule here
+    MonacoEditorModule,
+    MatMenuModule
   ],
   exports: [
     RequestEditorComponent,

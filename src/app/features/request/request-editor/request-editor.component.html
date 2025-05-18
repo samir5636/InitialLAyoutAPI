@@ -14,7 +14,7 @@
 
       <div class="url-input">
         <mat-form-field appearance="outline" class="full-width">
-          <input matInput placeholder="https://api.example.com/endpoint" formControlName="url">
+          <input matInput placeholder="https://simple-books-api.glitch.me" formControlName="url">
           <mat-error *ngIf="requestForm.get('url')?.hasError('required')">
             URL is required
           </mat-error>
@@ -22,8 +22,8 @@
       </div>
 
       <div class="send-button">
-        <button mat-raised-button color="primary" type="submit" [disabled]="requestForm.invalid || isLoading">
-          <span *ngIf="!isLoading">Send</span>
+        <button mat-stroked-button type="submit" [disabled]="requestForm.invalid || isLoading" style="border-radius: 0px;">
+          <span *ngIf="!isLoading" style="color: white">Send</span>
           <mat-spinner *ngIf="isLoading" diameter="24"></mat-spinner>
         </button>
       </div>
@@ -32,7 +32,10 @@
     <!-- Tabs Section -->
     <mat-tab-group animationDuration="0ms" class="request-tabs">
       <!-- Params Tab -->
-      <mat-tab label="Params">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="custom-colored-tab">Params</span>
+        </ng-template>
         <div class="tab-content">
           <div class="key-value-table">
             <table>
@@ -77,7 +80,10 @@
       </mat-tab>
 
       <!-- Headers Tab -->
-      <mat-tab label="Headers">
+      <mat-tab >
+        <ng-template mat-tab-label>
+          <span class="custom-colored-tab">Headers</span>
+        </ng-template>
         <div class="tab-content">
           <div class="key-value-table">
             <table>
@@ -124,6 +130,9 @@
       <!-- Body Tab -->
 
       <mat-tab label="Body">
+        <ng-template mat-tab-label>
+          <span class="custom-colored-tab">Body</span>
+        </ng-template>
         <div class="tab-content">
           <div class="body-type-selector">
             <mat-button-toggle-group [(ngModel)]="bodyType" [ngModelOptions]="{standalone: true}" (ngModelChange)="updateBodyEditorLanguage(bodyType)">
@@ -153,7 +162,10 @@
 
 
       <!-- Auth Tab -->
-      <mat-tab label="Auth">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <span class="custom-colored-tab" disableRipple>Auth</span>
+        </ng-template>
         <div class="tab-content">
           <div class="auth-type-selector">
             <mat-form-field appearance="outline">

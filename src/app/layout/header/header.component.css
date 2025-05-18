@@ -6,7 +6,7 @@
   background-color: var(--header-bg);
   color: var(--header-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid #424242;
+  border-bottom: 1px solid var(--border-color);
 
 }
 
@@ -79,13 +79,13 @@
 /* style for right section */
 
 .invite-button {
-  background-color: var(--invite-bg);
   height: 36px;
   border-radius: 18px;
   text-transform: none;
   margin: 0 8px;
   font-weight: 500;
   gap: 6px;
+  background-color: var(--perple-color) !important;
 }
 
 .mat-icon-button {

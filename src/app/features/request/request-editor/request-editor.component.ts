@@ -197,4 +197,8 @@ export class RequestEditorComponent implements OnInit {
       }
     });
   }
+
+  sendRequestWithOptions(option1: string) {
+
+  }
 }
