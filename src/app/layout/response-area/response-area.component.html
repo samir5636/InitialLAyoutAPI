@@ -19,6 +19,13 @@
       <div class="response-meta">
         <span class="time" title="Response Time">{{ responseTime }} ms</span>
         <span class="size" title="Response Size">{{ responseSize }} B</span>
+        <button class="copy-button"
+                (click)="copyResponseBody()"
+                [disabled]="!formattedBody && statusCode !== 204"
+                *ngIf="statusCode !== 0 || responseData"
+                title="Copy response body to clipboard">
+          <mat-icon>content_copy</mat-icon>
+        </button>
       </div>
     </div>
 
@@ -91,5 +98,20 @@
         </div>
       </mat-tab>
     </mat-tab-group>
+  </div>
+</div>
+
+<!-- Notifications container -->
+<div class="notifications-container">
+  <div *ngFor="let notification of notifications"
+       class="notification"
+       [ngClass]="notification.type">
+    <div class="notification-content">
+      <mat-icon>{{ notification.type === 'success' ? 'check_circle' : 'error' }}</mat-icon>
+      {{ notification.message }}
+    </div>
+    <button class="notification-close" (click)="removeNotification(notification.id)">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 </div>

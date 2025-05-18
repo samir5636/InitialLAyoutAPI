@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { ResponseService} from '../../core/services/response.service';
+import { ClipboardService, ClipboardNotification } from '../../core/services/clipboard.service';
 import { Subscription } from 'rxjs';
 
 // More specific interface for cookie properties
@@ -41,6 +42,7 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
   statusText: string = '';
   responseHeaders: { key: string, value: string }[] = [];
   cookies: ResponseCookie[] = [];
+  notifications: ClipboardNotification[] = [];
 
   editorOptions = {
     theme: 'vs-dark',
@@ -57,17 +59,29 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
     folding: true,
   };
 
-  constructor(private responseService: ResponseService) { }
+  constructor(
+    private responseService: ResponseService,
+    private clipboardService: ClipboardService
+  ) { }
 
   ngOnInit(): void {
     // Subscribe to response data from the service
-    this.subscription = this.responseService.responseData$.subscribe(data => {
-      if (data) {
-        this.processResponse(data);
-      } else {
-        this.resetView();
-      }
-    });
+    this.subscription.add(
+      this.responseService.responseData$.subscribe(data => {
+        if (data) {
+          this.processResponse(data);
+        } else {
+          this.resetView();
+        }
+      })
+    );
+
+    // Subscribe to clipboard notifications
+    this.subscription.add(
+      this.clipboardService.notifications$.subscribe(notifications => {
+        this.notifications = notifications;
+      })
+    );
 
     window.addEventListener('themeChange', (event: any) => {
       this.setMonacoTheme(event.detail);
@@ -91,7 +105,28 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   setMonacoTheme(theme: 'vs-light' | 'vs-dark') {
-      theme
+    theme
+  }
+
+  /**
+   * Copy the response body to clipboard
+   */
+  async copyResponseBody(): Promise<void> {
+    if (!this.formattedBody && this.statusCode !== 204) {
+      this.clipboardService.showNotification('No content to copy', 'error');
+      return;
+    }
+
+    // For 204 responses, copy the message "204 No Content"
+    const textToCopy = this.formattedBody || '204 No Content';
+    await this.clipboardService.copyToClipboard(textToCopy);
+  }
+
+  /**
+   * Remove a notification by ID
+   */
+  removeNotification(id: number): void {
+    this.clipboardService.removeNotification(id);
   }
 
   private resetView(): void {
