@@ -1,5 +1,4 @@
 .request-editor {
-  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -70,12 +69,14 @@
   background-color: var(--perple-color);
   height: 40px !important;
   border-radius: 5px !important;
-  border-radius: 5px !important;
 }
 
 
 .custom-colored-tab{
   color: var(--text-color) ;
+}
+.request-tabs{
+  overflow: auto;
 }
 
 .request-tabs ::ng-deep .mat-mdc-tab-header {
@@ -85,7 +86,7 @@
 
 .request-tabs ::ng-deep .mat-mdc-tab {
   min-width: 80px;
-  padding: 0 16px;
+  padding: 0 ;
 }
 
 .request-tabs ::ng-deep .mat-mdc-tab-body-wrapper {
@@ -93,12 +94,13 @@
   background-color: var(--background-color);
   border-radius: 0 0 4px 4px;
 
+
 }
 
 .tab-content {
   padding: 16px;
   height: calc(100% - 16px);
-  overflow: auto;
+  overflow-x:hidden;
 }
 
 /* Key-value table styling */
@@ -147,6 +149,7 @@ td ::ng-deep .mat-mdc-form-field-infix {
 td ::ng-deep .mat-mdc-form-field-wrapper {
   padding-bottom: 0;
 }
+
 
 /* Editor styling */
 .editor-container {

@@ -36,7 +36,7 @@
         <div class="tab-content">
           <div *ngIf="formattedBody || statusCode === 204" class="editor-container">
             <!-- Show editor even for 204 to display the "204 No Content" message if formattedBody is set to it -->
-            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="formattedBody"></ngx-monaco-editor>
+            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="formattedBody" ></ngx-monaco-editor>
           </div>
           <div *ngIf="!formattedBody && statusCode !== 0 && statusCode !== 204" class="no-data">
             <!-- Message for truly empty bodies that are not 204 -->

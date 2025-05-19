@@ -69,8 +69,8 @@
 
 .content-header {
   height: 15px;
-  padding: 16px;
-  border-bottom: 1px solid #424242;
+  padding: 14px;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,6 +81,7 @@
 }
 
 .search-area  {
+  flex: 1;
   margin-top: 5px;
   background-color: var(--sidebar-filter-bg);
   border-radius: 4px;

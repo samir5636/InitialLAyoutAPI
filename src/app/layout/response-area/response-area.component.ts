@@ -45,7 +45,7 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
   notifications: ClipboardNotification[] = [];
 
   editorOptions = {
-    theme: 'vs-dark',
+    theme: 'vs-light',
     language: 'plaintext',
     readOnly: true,
     automaticLayout: true,
@@ -85,7 +85,9 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
 
     window.addEventListener('themeChange', (event: any) => {
       this.setMonacoTheme(event.detail);
+
     });
+
   }
 
   ngOnDestroy(): void {
@@ -105,7 +107,8 @@ export class ResponseAreaComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   setMonacoTheme(theme: 'vs-light' | 'vs-dark') {
-    theme
+    monaco.editor.setTheme(theme);
+    this.editorOptions = { ...this.editorOptions, theme };
   }
 
   /**
