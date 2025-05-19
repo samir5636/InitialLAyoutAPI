@@ -1,10 +1,10 @@
 // request-editor.component.ts
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpMethod } from '../../../core/models/http-method.enum';
 import { HttpClientService } from '../../../core/services/http-client.service';
 import { KeyValuePair } from '../../../core/models/request.model';
-import {ResponseService} from '../../../core/services/response.service';
+import { ResponseService } from '../../../core/services/response.service';
 
 @Component({
   selector: 'app-request-editor',
@@ -42,12 +42,14 @@ export class RequestEditorComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private httpClientService: HttpClientService,
-    private responseService: ResponseService // Inject the new ResponseService
+    private responseService: ResponseService, // Inject the new ResponseService
+    public cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.setupDefaultHeaders();
+    this.setupDefaultParams();
 
     // Initial language setting based on default bodyType
     this.updateBodyEditorLanguage(this.bodyType);
@@ -60,6 +62,14 @@ export class RequestEditorComponent implements OnInit {
     const savedTheme = localStorage.getItem('theme');
     const theme = savedTheme === 'dark' ? 'vs-dark' : 'vs-light';
     this.setMonacoTheme(theme);
+
+    // Subscribe to URL changes to parse parameters
+    this.requestForm.get('url')?.valueChanges.subscribe((url) => {
+      if (url) {
+        this.parseUrlParameters(url);
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   initForm(): void {
@@ -108,11 +118,16 @@ export class RequestEditorComponent implements OnInit {
     };
   }
 
-
   setupDefaultHeaders(): void {
     this.headers = [
       { key: 'Content-Type', value: 'application/json', enabled: true },
       { key: 'Accept', value: 'application/json', enabled: true },
+      { key: '', value: '', enabled: true }
+    ];
+  }
+
+  setupDefaultParams(): void {
+    this.params = [
       { key: '', value: '', enabled: true }
     ];
   }
@@ -130,6 +145,7 @@ export class RequestEditorComponent implements OnInit {
 
   addParam(): void {
     this.params.push({ key: '', value: '', enabled: true });
+    this.cdr.detectChanges();
   }
 
   removeParam(index: number): void {
@@ -137,8 +153,130 @@ export class RequestEditorComponent implements OnInit {
     if (this.params.length === 0) {
       this.addParam();
     }
+    this.cdr.detectChanges();
   }
 
+  // Handle URL input event
+  onUrlInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const url = input.value;
+    
+    try {
+      // Try to parse the URL
+      const urlObj = new URL(url);
+      const baseUrl = urlObj.origin + urlObj.pathname;
+      
+      // Update the form with the base URL
+      this.requestForm.patchValue({ url: baseUrl }, { emitEvent: false });
+      
+      // Parse and update parameters
+      this.parseUrlParameters(url);
+    } catch (e) {
+      // If URL is invalid, just update the form value
+      this.requestForm.patchValue({ url: url }, { emitEvent: false });
+    }
+    
+    this.cdr.detectChanges();
+  }
+
+  // Handle URL blur event
+  onUrlBlur(): void {
+    const url = this.requestForm.get('url')?.value;
+    if (url) {
+      try {
+        // Try to parse the URL
+        const urlObj = new URL(url);
+        const baseUrl = urlObj.origin + urlObj.pathname;
+        
+        // Update the form with the base URL
+        this.requestForm.patchValue({ url: baseUrl }, { emitEvent: false });
+        
+        // Parse and update parameters
+        this.parseUrlParameters(url);
+      } catch (e) {
+        // If URL is invalid, do nothing
+        console.log('Invalid URL format');
+      }
+    }
+  }
+
+  // Update the parseUrlParameters method
+  private parseUrlParameters(url: string): void {
+    try {
+      const urlObj = new URL(url);
+      const searchParams = new URLSearchParams(urlObj.search);
+      
+      // Clear existing params
+      this.params = [];
+      
+      // Add each parameter from the URL
+      searchParams.forEach((value, key) => {
+        this.params.push({
+          key: key,
+          value: value,
+          enabled: true
+        });
+      });
+
+      // Add an empty row if no parameters
+      if (this.params.length === 0) {
+        this.params.push({ key: '', value: '', enabled: true });
+      }
+      
+      this.cdr.detectChanges();
+    } catch (e) {
+      // If URL is invalid, do nothing
+      console.log('Invalid URL format');
+    }
+  }
+
+  // Update the buildQueryString method
+  buildQueryString(): string {
+    const validParams = this.params.filter(p => p.enabled && p.key.trim() !== '');
+
+    if (validParams.length === 0) {
+      return '';
+    }
+
+    const queryParams = new URLSearchParams();
+    validParams.forEach(param => {
+      if (param.key.trim()) {
+        queryParams.append(param.key.trim(), param.value || '');
+      }
+    });
+
+    return queryParams.toString();
+  }
+
+  // Update the processUrl method
+  processUrl(baseUrl: string): string {
+    const queryString = this.buildQueryString();
+
+    if (!queryString) {
+      return baseUrl;
+    }
+
+    try {
+      const url = new URL(baseUrl);
+      const hasQueryParams = url.search.length > 0;
+      return hasQueryParams
+        ? `${baseUrl}&${queryString}`
+        : `${baseUrl}?${queryString}`;
+    } catch (e) {
+      // If URL is invalid, just append the query string
+      const hasQueryParams = baseUrl.includes('?');
+      return hasQueryParams
+        ? `${baseUrl}&${queryString}`
+        : `${baseUrl}?${queryString}`;
+    }
+  }
+
+  // Update the getDisplayUrl method
+  getDisplayUrl(): string {
+    const baseUrl = this.requestForm.get('url')?.value;
+    if (!baseUrl) return '';
+    return this.processUrl(baseUrl);
+  }
 
   sendRequest(): void {
     if (this.requestForm.invalid) {
@@ -154,6 +292,9 @@ export class RequestEditorComponent implements OnInit {
     const formValue = this.requestForm.value;
     let body = null;
 
+    // Process the URL with query parameters
+    const processedUrl = this.processUrl(formValue.url);
+
     // Try to parse the JSON body if it's not empty and not a GET request and bodyType is JSON
     if (formValue.method !== HttpMethod.GET && this.bodyType === 'json' && formValue.body && formValue.body.trim()) {
       try {
@@ -168,11 +309,14 @@ export class RequestEditorComponent implements OnInit {
       body = formValue.body; // Send as plain text for 'text' or 'form' types
     }
 
+    // Only include headers that have a key (and are enabled)
+    const validHeaders = this.headers.filter(h => h.key.trim() !== '' && h.enabled);
+
     this.httpClientService.sendRequest(
-      formValue.url,
+      processedUrl,
       formValue.method,
-      this.headers.filter(h => h.key.trim() !== ''),
-      this.params.filter(p => p.key.trim() !== ''),
+      validHeaders,
+      this.params.filter(p => p.key.trim() !== '' && p.enabled),
       body
     ).subscribe({
       next: (response) => {
@@ -196,9 +340,5 @@ export class RequestEditorComponent implements OnInit {
         this.responseService.updateResponseData(this.responseData);
       }
     });
-  }
-
-  sendRequestWithOptions(option1: string) {
-
   }
 }

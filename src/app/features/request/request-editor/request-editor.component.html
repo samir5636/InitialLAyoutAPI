@@ -14,7 +14,11 @@
 
       <div class="url-input">
         <mat-form-field appearance="outline" class="full-width">
-          <input matInput placeholder="https://simple-books-api.glitch.me" formControlName="url">
+          <input matInput 
+                 [placeholder]="'https://simple-books-api.glitch.me'" 
+                 [value]="getDisplayUrl()"
+                 (input)="onUrlInput($event)"
+                 (blur)="onUrlBlur()">
           <mat-error *ngIf="requestForm.get('url')?.hasError('required')">
             URL is required
           </mat-error>
@@ -51,16 +55,16 @@
               <tbody>
               <tr *ngFor="let param of params; let i = index">
                 <td>
-                  <mat-checkbox [(ngModel)]="param.enabled" [ngModelOptions]="{standalone: true}"></mat-checkbox>
+                  <mat-checkbox [(ngModel)]="param.enabled" [ngModelOptions]="{standalone: true}" (ngModelChange)="cdr.detectChanges()"></mat-checkbox>
                 </td>
                 <td>
                   <mat-form-field appearance="outline" class="full-width">
-                    <input matInput [(ngModel)]="param.key" [ngModelOptions]="{standalone: true}" placeholder="Parameter name">
+                    <input matInput [(ngModel)]="param.key" [ngModelOptions]="{standalone: true}" placeholder="Parameter name" (ngModelChange)="cdr.detectChanges()">
                   </mat-form-field>
                 </td>
                 <td>
                   <mat-form-field appearance="outline" class="full-width">
-                    <input matInput [(ngModel)]="param.value" [ngModelOptions]="{standalone: true}" placeholder="Parameter value">
+                    <input matInput [(ngModel)]="param.value" [ngModelOptions]="{standalone: true}" placeholder="Parameter value" (ngModelChange)="cdr.detectChanges()">
                   </mat-form-field>
                 </td>
                 <td>
