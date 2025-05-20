@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {LayoutModule} from './layout/layout.module';
-import {MatSidenavContainer, MatSidenavContent} from '@angular/material/sidenav';
-import {AngularSplitModule, SplitAreaComponent, SplitComponent} from 'angular-split';
-import {HttpClientModule} from '@angular/common/http';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MonacoEditorModule} from 'ngx-monaco-editor-v2';
-import {RequestModule} from './features/request/request.module'
+import { LayoutModule } from './layout/layout.module';
+import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { AngularSplitModule, SplitAreaComponent, SplitComponent } from 'angular-split';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { RequestModule } from './features/request/request.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,6 @@ import {RequestModule} from './features/request/request.module'
     FormsModule,
     MatButtonToggleModule,
     MonacoEditorModule.forRoot(),
-    LayoutModule,
     SplitComponent,
     SplitAreaComponent,
     RequestModule

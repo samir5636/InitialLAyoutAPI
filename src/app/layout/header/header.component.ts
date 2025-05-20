@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   isDarkMode = false;
+  showWorkspaceMenu = false;
+  apiIconHovered = false;
 
   ngOnInit() {
     // Load theme from localStorage
