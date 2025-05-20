@@ -1,5 +1,6 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, OnInit, PLATFORM_ID, ViewChild, AfterViewInit} from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
+import {SplitComponent} from 'angular-split';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,11 @@ import {isPlatformBrowser} from '@angular/common';
   standalone: false,
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'apilotLayout';
+
+  @ViewChild('mainSplit') mainSplit!: SplitComponent;
+  @ViewChild('verticalSplit') verticalSplit!: SplitComponent;
 
   // Default split sizes
   sidebarSize: number = 20;
@@ -30,6 +34,54 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if (this.isBrowser) {
       this.loadSplitSizes();
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.isBrowser) {
+      // Use ResizeObserver to detect content changes
+      const resizeObserver = new ResizeObserver(() => {
+        this.adjustSplitSizes();
+      });
+
+      // Observe the request area for size changes
+      const requestArea = document.querySelector('.request-editor');
+      if (requestArea) {
+        resizeObserver.observe(requestArea);
+      }
+
+      // Also observe the key-value tables for changes
+      const tables = document.querySelectorAll('.key-value-table');
+      tables.forEach(table => {
+        resizeObserver.observe(table);
+      });
+    }
+  }
+
+  private adjustSplitSizes() {
+    if (!this.isBrowser || !this.verticalSplit) return;
+
+    const requestArea = document.querySelector('.request-editor');
+    if (!requestArea) return;
+
+    const requestHeight = requestArea.scrollHeight;
+    const containerHeight = requestArea.parentElement?.clientHeight || 0;
+
+    // If content height is greater than container height, adjust split sizes
+    if (requestHeight > containerHeight) {
+      // Calculate new sizes based on content
+      const totalHeight = requestHeight + (this.responsePaneSize * containerHeight / 100);
+      const newRequestSize = (requestHeight / totalHeight) * 100;
+      const newResponseSize = 100 - newRequestSize;
+
+      // Update split sizes with minimum and maximum constraints
+      this.requestPaneSize = Math.min(Math.max(newRequestSize, 20), 80);
+      this.responsePaneSize = 100 - this.requestPaneSize;
+
+      // Update the split sizes using dragEnd event
+      this.onVerticalDragEnd({
+        sizes: [this.requestPaneSize, this.responsePaneSize]
+      });
     }
   }
 

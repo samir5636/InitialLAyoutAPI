@@ -4,12 +4,12 @@
   height: 100vh;
   overflow: hidden;
 }
+
 .main-content {
   background-color: var(--background-color);
-}
-.main-content {
   flex: 1;
   height: calc(100vh - 45px); /* Subtract header height */
+  overflow: hidden;
 }
 
 /* Styling for the gutter (splitter handles) */
@@ -21,40 +21,49 @@
 
 ::ng-deep .as-split-area {
   overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-
 ::ng-deep .as-split-gutter.gutter-horizontal {
-  cursor: ew-resize; /* Like "Sizeew" in your image */
+  cursor: ew-resize;
 }
 
 ::ng-deep .as-split-gutter.gutter-vertical {
-  cursor: ns-resize; /* Like "Sizens" in your image */
+  cursor: ns-resize;
 }
 
 /* Styling for the content areas */
 .request-pane, .response-pane {
   height: 100%;
-  padding: 10px;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* Just to make it visually distinct during development */
-.request-pane {
-  background-color: var(--background-color);
-  color:var(--text-color);
+.request-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow: auto;
+  min-height: 0;
 }
 
 .response-pane {
   background-color: var(--background-color);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  color:var(--text-color);
+  color: var(--text-color);
+  overflow: hidden;
+  min-height: 0;
 }
-.tools-pane{
+
+.tools-pane {
   background-color: var(--background-color);
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  color:var(--text-color);
+  color: var(--text-color);
+  height: 100%;
+  overflow: hidden;
 }
 
 /* Dark theme adjustments */
@@ -62,6 +71,7 @@
 :host-context(.dark-theme) .response-pane {
   border-color: rgba(255, 255, 255, 0.1);
 }
+
 :host-context(.dark-theme) .tools-pane {
   background-color: rgba(255, 255, 255, 0.1);
 }

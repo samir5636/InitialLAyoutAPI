@@ -1,6 +1,9 @@
 .request-editor {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  min-height: 0;
 }
 
 .request-editor, .request-editor * {
@@ -8,13 +11,8 @@
 }
 
 .mat-button, .mat-select-value, .mat-form-field-label, .mat-input-element {
-  color: var(--text-color) ;
+  color: var(--text-color);
 }
-
-
-
-
-
 
 /* URL and Method Container - Postman-like styling */
 .url-method-container {
@@ -24,10 +22,15 @@
   padding: 8px 12px;
   gap: 3px;
   margin-bottom: 8px;
+  flex-shrink: 0;
+  background-color: var(--background-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px -2px rgba(0,0,0,0.04);
 }
 
 .method-select {
-
   width: 120px;
   flex-shrink: 0;
   color: var(--text-color);
@@ -56,6 +59,7 @@
   min-height: unset !important;
   color: var(--text-color) !important;
 }
+
 .full-width {
   width: 100%;
 }
@@ -63,6 +67,7 @@
 .send-button {
   width: 100px;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .send-button button {
@@ -71,41 +76,57 @@
   border-radius: 5px !important;
 }
 
-
-.custom-colored-tab{
-  color: var(--text-color) ;
+.custom-colored-tab {
+  color: var(--text-color);
 }
-.request-tabs{
-  overflow: auto;
+
+.request-tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .request-tabs ::ng-deep .mat-mdc-tab-header {
   background-color: var(--background-color);
   border-radius: 4px 4px 0 0;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .request-tabs ::ng-deep .mat-mdc-tab {
   min-width: 80px;
-  padding: 0 ;
+  padding: 0;
 }
 
 .request-tabs ::ng-deep .mat-mdc-tab-body-wrapper {
   flex: 1;
   background-color: var(--background-color);
   border-radius: 0 0 4px 4px;
-
-
+  overflow: hidden;
+  min-height: 0;
 }
 
 .tab-content {
   padding: 16px;
-  height: calc(100% - 16px);
-  overflow-x:hidden;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  min-height: 0;
 }
 
 /* Key-value table styling */
 .key-value-table {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* flex: 1; */
+  /* overflow: hidden; */
+  min-height: 0;
 }
 
 table {
@@ -125,6 +146,10 @@ th {
   color: #666;
   font-size: 13px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  background-color: var(--background-color);
+  z-index: 1;
 }
 
 .enable-column {
@@ -150,13 +175,14 @@ td ::ng-deep .mat-mdc-form-field-wrapper {
   padding-bottom: 0;
 }
 
-
 /* Editor styling */
 .editor-container {
   height: 300px;
+  min-height: 200px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   margin-top: 12px;
+  flex-shrink: 0;
 }
 
 .get-body-message {
@@ -175,11 +201,18 @@ td ::ng-deep .mat-mdc-form-field-wrapper {
   margin-top: 8px;
   display: flex;
   justify-content: flex-start;
+  padding: 8px 0;
+  background-color: var(--background-color);
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
 .add-row button {
   font-size: 14px;
-  color: var(--perple-color); /* Postman orange */
+  color: var(--perple-color);
 }
 
 /* Make sure the form takes up the full height */
@@ -187,6 +220,8 @@ form {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* Make the tab group take up the remaining height */
@@ -194,16 +229,32 @@ form {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 ::ng-deep .mat-tab-body-wrapper {
   flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+::ng-deep .mat-tab-body {
+  height: 100%;
+  overflow: hidden;
+  min-height: 0;
+}
+
+::ng-deep .mat-tab-body-content {
+  height: 100%;
+  overflow: hidden;
+  min-height: 0;
 }
 
 /* Body type selector styling */
 .body-type-selector {
   margin-bottom: 12px;
-
+  flex-shrink: 0;
 }
 
 .body-type-selector ::ng-deep .mat-button-toggle-group {
@@ -213,18 +264,18 @@ form {
 
 .body-type-selector ::ng-deep .mat-button-toggle {
   background-color: var(--background-color);
-  color: var(--perple-color) ;
+  color: var(--perple-color);
 }
 
 .body-type-selector ::ng-deep .mat-button-toggle-checked {
   background-color: #e0e0e0;
-  /*color: #000;*/
 }
 
 /* Auth styling */
 .auth-type-selector {
   max-width: 300px;
   margin-bottom: 16px;
+  flex-shrink: 0;
 }
 
 .auth-content {
@@ -265,16 +316,6 @@ mat-spinner {
   border-radius: 4px;
   font-size: 12px;
   word-break: break-all;
-}
-
-.url-label {
-  color: #666;
-  margin-right: 8px;
-}
-
-.url-value {
-  color: #2196f3;
-  font-family: monospace;
 }
 
 
